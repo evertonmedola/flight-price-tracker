@@ -1,4 +1,5 @@
 import sqlite3
+from collections.abc import Iterator
 from datetime import UTC, datetime
 
 import pytest
@@ -16,10 +17,11 @@ from flight_tracker.storage import (
 
 
 @pytest.fixture
-def conn() -> sqlite3.Connection:
+def conn() -> Iterator[sqlite3.Connection]:
     connection = sqlite3.connect(":memory:")
     init_db(connection)
-    return connection
+    yield connection
+    connection.close()
 
 
 def _quote(price_cents: int, fetched_at: datetime, route_key: str = "GRU-LIS") -> PriceQuote:
@@ -35,8 +37,11 @@ def _quote(price_cents: int, fetched_at: datetime, route_key: str = "GRU-LIS") -
 class TestInitDb:
     def test_is_idempotent(self) -> None:
         connection = sqlite3.connect(":memory:")
-        init_db(connection)
-        init_db(connection)  # não deve levantar erro na segunda chamada
+        try:
+            init_db(connection)
+            init_db(connection)  # não deve levantar erro na segunda chamada
+        finally:
+            connection.close()
 
     def test_creates_expected_tables(self, conn: sqlite3.Connection) -> None:
         tables = {

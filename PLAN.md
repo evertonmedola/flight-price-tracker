@@ -219,7 +219,7 @@ Convenção: "verde" = comando roda com exit code 0.
   `::test_daily_guard_releases_next_day`,
   `::test_daily_guard_does_not_affect_mock_provider`.
 
-- [ ] **5.4 `runner.py`: orquestração completa + transação + exit
+- [x] **5.4 `runner.py`: orquestração completa + transação + exit
   codes** [§4, §7]
   `run(config_path, db_path, dry_run) -> int`, envolvendo tudo em
   `storage.transaction`, chamando `notifier` quando há alertas,
@@ -229,13 +229,13 @@ Convenção: "verde" = comando roda com exit code 0.
   `::test_exit_2_partial_provider_failure`,
   `::test_exit_1_config_error`, `::test_exit_1_smtp_error`.
 
-- [ ] **5.5 Requisito §6.3 formalizado end-to-end no runner** [§6.3, §10.6]
+- [x] **5.5 Requisito §6.3 formalizado end-to-end no runner** [§6.3, §10.6]
   **Sucesso:** falha de SMTP não deixa nenhuma linha nova (incluindo
   `last_queried_date`, conforme observação do usuário sobre o guard
   sendo desfeito junto — comportamento aceito, sem mudança de SPEC).
   **Teste:** `test_runner.py::test_smtp_failure_rolls_back_everything`.
 
-- [ ] **5.6 Dry-run** [§4.1]
+- [x] **5.6 Dry-run** [§4.1]
   `--dry-run`: força `MockProvider`, banco `:memory:` por padrão, sem
   exigir env vars de SMTP, imprime o e-mail no stdout.
   **Sucesso:** roda sem nenhuma env var definida.
