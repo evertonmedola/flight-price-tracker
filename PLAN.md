@@ -44,7 +44,7 @@ Convenção: "verde" = comando roda com exit code 0.
 
 ## Fase 1 — Domínio e configuração
 
-- [ ] **1.1 `models.py`: `Route`, `PriceQuote`, `Alert`** [§3.1]
+- [x] **1.1 `models.py`: `Route`, `PriceQuote`, `Alert`** [§3.1]
   Dataclasses `frozen=True` exatamente como especificado.
   **Sucesso:** `mypy --strict src/flight_tracker/models.py` verde.
   **Teste:** `tests/test_models.py` instancia cada dataclass com valores
