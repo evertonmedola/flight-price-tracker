@@ -144,7 +144,7 @@ Convenção: "verde" = comando roda com exit code 0.
 
 ## Fase 4 — Providers
 
-- [ ] **4.1 `providers/base.py`: `PriceProvider` e `ProviderError`**
+- [x] **4.1 `providers/base.py`: `PriceProvider` e `ProviderError`**
   [§5.1]
   **Sucesso:** `mypy --strict` aceita uma implementação mínima do
   Protocol.
@@ -153,7 +153,7 @@ Convenção: "verde" = comando roda com exit code 0.
   com `@runtime_checkable`, ou verificação estática apenas — decidir e
   documentar).
 
-- [ ] **4.2 `providers/mock.py`: `MockProvider`** [§5.2]
+- [x] **4.2 `providers/mock.py`: `MockProvider`** [§5.2]
   Suporta injeção de sequência fixa de preços para testes.
   **Sucesso:** duas chamadas consecutivas para a mesma rota com
   sequência `[500000, 400000]` retornam nessa ordem.
