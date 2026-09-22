@@ -268,7 +268,7 @@ Convenção: "verde" = comando roda com exit code 0.
 
 ## Fase 7 — CLI
 
-- [ ] **7.1 `__main__.py`: parsing de argumentos** [§4.1, §7]
+- [x] **7.1 `__main__.py`: parsing de argumentos** [§4.1, §7]
   `--dry-run`, `--config` (padrão `config/routes.yaml`), `--db`
   (padrão `data/prices.db`, ou `:memory:` se `--dry-run` sem `--db`
   explícito).
@@ -277,7 +277,7 @@ Convenção: "verde" = comando roda com exit code 0.
   `::test_default_db_path_used_when_not_dry_run`,
   `::test_dry_run_defaults_to_memory_db`.
 
-- [ ] **7.2 CLI retorna o exit code do `runner.run()`**
+- [x] **7.2 CLI retorna o exit code do `runner.run()`**
   **Sucesso:** `sys.exit(code)` propaga corretamente.
   **Teste:** `test_cli.py::test_exit_code_propagates` (subprocess ou
   chamada direta de `main()` capturando `SystemExit`).

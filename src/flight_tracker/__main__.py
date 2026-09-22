@@ -1,9 +1,52 @@
-"""Ponto de entrada da CLI. Implementação completa na Fase 7."""
+"""Ponto de entrada da CLI."""
+
+import argparse
+import sys
+from pathlib import Path
+
+from flight_tracker.runner import run
+
+_DEFAULT_CONFIG_PATH = "config/routes.yaml"
+_DEFAULT_DB_PATH = "data/prices.db"
+_MEMORY_DB_PATH = ":memory:"
 
 
-def main() -> int:
-    raise NotImplementedError("CLI ainda não implementada (ver PLAN.md, Fase 7)")
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="flight_tracker",
+        description="Rastreador de preços de passagens aéreas.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="usa MockProvider, banco em memória e imprime o e-mail em vez de enviar",
+    )
+    parser.add_argument(
+        "--config",
+        default=_DEFAULT_CONFIG_PATH,
+        help=f"caminho do arquivo de rotas (padrão: {_DEFAULT_CONFIG_PATH})",
+    )
+    parser.add_argument(
+        "--db",
+        default=None,
+        help=f"caminho do banco SQLite (padrão: {_DEFAULT_DB_PATH}, "
+        f"ou {_MEMORY_DB_PATH} em --dry-run)",
+    )
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = build_parser().parse_args(argv)
+
+    if args.db is not None:
+        db_path = args.db
+    elif args.dry_run:
+        db_path = _MEMORY_DB_PATH
+    else:
+        db_path = _DEFAULT_DB_PATH
+
+    return run(config_path=Path(args.config), db_path=db_path, dry_run=args.dry_run)
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
