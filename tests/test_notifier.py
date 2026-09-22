@@ -90,6 +90,67 @@ class TestBody:
         assert "<script>" not in content
         assert "&lt;script&gt;" in content
 
+    def test_header_has_background_and_larger_title(self) -> None:
+        message = build_message([_alert()])
+        html = message.get_body(preferencelist=("html",))
+        assert html is not None
+        content = html.get_content()
+
+        assert "<h1" in content
+        assert "background:#eff6ff" in content
+
+    def test_current_price_is_visually_highlighted(self) -> None:
+        message = build_message([_alert(price_cents=400000)])
+        html = message.get_body(preferencelist=("html",))
+        assert html is not None
+        content = html.get_content()
+
+        # A célula do preço atual carrega estilo de destaque (verde/negrito)
+        # junto com o valor formatado, não só o valor cru em algum lugar da
+        # tabela.
+        assert "color:#16a34a" in content
+        assert "font-weight:bold" in content
+        assert "R$ 4.000,00" in content
+
+    def test_link_is_styled_as_button_not_bare_word(self) -> None:
+        message = build_message([_alert()])
+        html = message.get_body(preferencelist=("html",))
+        assert html is not None
+        content = html.get_content()
+
+        assert "Ver oferta" in content
+        assert ">ver</a>" not in content
+        assert "background:#2563eb" in content
+        assert "border-radius" in content
+
+    def test_footer_present(self) -> None:
+        message = build_message([_alert()])
+        html = message.get_body(preferencelist=("html",))
+        assert html is not None
+        content = html.get_content()
+
+        assert "gerado automaticamente" in content.lower()
+        assert "flight-price-tracker" in content.lower()
+
+    def test_rows_alternate_background(self) -> None:
+        message = build_message([_alert(), _alert()])
+        html = message.get_body(preferencelist=("html",))
+        assert html is not None
+        content = html.get_content()
+
+        assert "background:#ffffff;" in content
+        assert "background:#fafafa;" in content
+
+    def test_no_external_stylesheet_or_image(self) -> None:
+        message = build_message([_alert()])
+        html = message.get_body(preferencelist=("html",))
+        assert html is not None
+        content = html.get_content()
+
+        assert "<link" not in content
+        assert "<img" not in content
+        assert "stylesheet" not in content
+
     def test_text_fallback_present(self) -> None:
         message = build_message([_alert()])
         text = message.get_body(preferencelist=("plain",))

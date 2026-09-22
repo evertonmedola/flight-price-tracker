@@ -91,28 +91,58 @@ def _text_body(alerts: list[Alert]) -> str:
     return "\n".join(lines)
 
 
+_FONT_STACK = "Arial, Helvetica, sans-serif"
+_BORDER = "1px solid #e5e7eb"
+_CELL_BASE = f"padding:10px 8px;border-bottom:{_BORDER};font-size:14px;"
+_CELL = _CELL_BASE + "color:#1f2937;"
+_ROW_BG_EVEN = "#ffffff"
+_ROW_BG_ODD = "#fafafa"
+
+
 def _html_body(alerts: list[Alert]) -> str:
-    rows = "\n".join(_html_row(alert) for alert in alerts)
+    header_cells = "".join(
+        f'<th style="text-align:left;padding:10px 8px;background:#f3f4f6;'
+        f'color:#374151;font-size:13px;border-bottom:2px solid #d1d5db;">{label}</th>'
+        for label in ("Rota", "Datas", "Anterior", "Atual", "Variação", "Alvo", "Motivo", "")
+    )
+    rows = "\n".join(_html_row(alert, index) for index, alert in enumerate(alerts))
+    subject = escape(_subject(alerts))
+
     return f"""\
 <html>
-  <body>
-    <table border="1" cellpadding="6" cellspacing="0">
-      <thead>
-        <tr>
-          <th>Rota</th><th>Datas</th><th>Anterior</th><th>Atual</th>
-          <th>Variação</th><th>Alvo</th><th>Motivo</th><th>Link</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rows}
-      </tbody>
+  <body style="margin:0;padding:0;background:#f9fafb;font-family:{_FONT_STACK};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" \
+style="max-width:600px;margin:0 auto;background:#ffffff;">
+      <tr>
+        <td style="background:#eff6ff;padding:20px 24px;">
+          <h1 style="margin:0;font-size:20px;color:#1e3a8a;font-family:{_FONT_STACK};">
+            {subject}
+          </h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:16px 24px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" \
+style="border-collapse:collapse;">
+            <tr>{header_cells}</tr>
+            {rows}
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:12px 24px 20px;border-top:{_BORDER};">
+          <p style="margin:0;font-size:12px;color:#9ca3af;font-family:{_FONT_STACK};">
+            Gerado automaticamente pelo flight-price-tracker.
+          </p>
+        </td>
+      </tr>
     </table>
   </body>
 </html>
 """
 
 
-def _html_row(alert: Alert) -> str:
+def _html_row(alert: Alert, index: int) -> str:
     route = alert.route
     previous = (
         _format_price(alert.previous_price_cents) if alert.previous_price_cents is not None else "—"
@@ -124,15 +154,27 @@ def _html_row(alert: Alert) -> str:
     if route.return_date is not None:
         dates += f" – {route.return_date.isoformat()}"
 
+    row_bg = _ROW_BG_ODD if index % 2 else _ROW_BG_EVEN
+    # Toda linha desta tabela já é, por construção, um alerta de queda e/ou
+    # preço abaixo do alvo (é por isso que está no e-mail) — o preço atual
+    # sempre recebe o destaque visual.
+    price_cell_style = _CELL_BASE + "color:#16a34a;font-weight:bold;"
+
     return (
-        "<tr>"
-        f"<td>{escape(route.origin)} → {escape(route.destination)}</td>"
-        f"<td>{escape(dates)}</td>"
-        f"<td>{escape(previous)}</td>"
-        f"<td>{escape(_format_price(alert.quote.price_cents))}</td>"
-        f"<td>{escape(_format_variation(alert.previous_price_cents, alert.quote.price_cents))}</td>"
-        f"<td>{escape(target)}</td>"
-        f"<td>{escape(_REASON_LABELS[alert.reason])}</td>"
-        f'<td><a href="{escape(_google_flights_link(alert))}">ver</a></td>'
+        f'<tr style="background:{row_bg};">'
+        f'<td style="{_CELL}">{escape(route.origin)} → {escape(route.destination)}</td>'
+        f'<td style="{_CELL}">{escape(dates)}</td>'
+        f'<td style="{_CELL}">{escape(previous)}</td>'
+        f'<td style="{price_cell_style}">{escape(_format_price(alert.quote.price_cents))}</td>'
+        f'<td style="{_CELL}">'
+        f"{escape(_format_variation(alert.previous_price_cents, alert.quote.price_cents))}</td>"
+        f'<td style="{_CELL}">{escape(target)}</td>'
+        f'<td style="{_CELL}">{escape(_REASON_LABELS[alert.reason])}</td>'
+        f'<td style="{_CELL}">'
+        f'<a href="{escape(_google_flights_link(alert))}" '
+        f'style="display:inline-block;background:#2563eb;color:#ffffff;'
+        f"padding:6px 14px;border-radius:6px;text-decoration:none;"
+        f'font-weight:600;font-size:13px;font-family:{_FONT_STACK};">'
+        f"Ver oferta →</a></td>"
         "</tr>"
     )
