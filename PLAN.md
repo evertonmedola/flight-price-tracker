@@ -160,7 +160,7 @@ Convenção: "verde" = comando roda com exit code 0.
   **Teste:** `test_providers_mock.py::test_sequence_injection` e
   `::test_deterministic_default_price`.
 
-- [ ] **4.3 `providers/serpapi.py`: requisição básica e parsing**
+- [x] **4.3 `providers/serpapi.py`: requisição básica e parsing**
   [§5.3]
   `get_price()` monta a URL/params (`engine=google_flights`,
   `currency=BRL`), chama via `httpx.Client`, extrai o menor preço entre
@@ -170,7 +170,7 @@ Convenção: "verde" = comando roda com exit code 0.
   **Teste:** `test_providers_serpapi.py::test_parses_lowest_price`
   usando `httpx.MockTransport` (sem rede real).
 
-- [ ] **4.4 `providers/serpapi.py`: erros e retry** [§5.3]
+- [x] **4.4 `providers/serpapi.py`: erros e retry** [§5.3]
   4xx/`error`/sem voos → `ProviderError` imediato; 5xx/timeout → 1
   retry, depois `ProviderError`.
   **Sucesso:** cada categoria de erro é coberta.
@@ -179,14 +179,14 @@ Convenção: "verde" = comando roda com exit code 0.
   `::test_5xx_then_success_retries_once`,
   `::test_5xx_twice_raises_provider_error`.
 
-- [ ] **4.5 Requisito §6.2 — guard interno de retry** [§6.2]
+- [x] **4.5 Requisito §6.2 — guard interno de retry** [§6.2]
   **Sucesso:** o estado interno só é marcado após 2xx válido.
   **Teste:** os dois testes descritos em §6.2, literalmente:
   `test_providers_serpapi.py::test_retry_not_blocked_by_guard_after_first_failure`
   e
   `::test_guard_does_not_block_separate_call_after_failed_retry`.
 
-- [ ] **4.6 Nunca logar segredos** [§5.3]
+- [x] **4.6 Nunca logar segredos** [§5.3]
   **Sucesso:** nenhuma mensagem de log/exceção contém o valor da API
   key.
   **Teste:** `test_providers_serpapi.py::test_api_key_never_in_logs_or_errors`
