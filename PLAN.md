@@ -197,7 +197,7 @@ Convenção: "verde" = comando roda com exit code 0.
 
 ## Fase 5 — Runner (orquestração)
 
-- [ ] **5.1 `runner.py`: função de processamento de uma rota**
+- [x] **5.1 `runner.py`: função de processamento de uma rota**
   [§4 passos 1–5]
   `process_route(conn, provider, route, today) -> Alert | None`,
   incluindo os guards de §4 passo 2 (dia UTC) e a leitura de `previous`
@@ -206,13 +206,13 @@ Convenção: "verde" = comando roda com exit code 0.
   **Teste:** reusa/formaliza o teste de 2.4 aqui se ainda não
   formalizado; adiciona `test_runner.py::test_route_skipped_when_departure_in_past`.
 
-- [ ] **5.2 Requisito §6.1 formalizado no runner** [§6.1]
+- [x] **5.2 Requisito §6.1 formalizado no runner** [§6.1]
   Se a tarefa 2.4 foi adiada, implementar aqui definitivamente.
   **Sucesso:** teste de regressão passa e falha propositalmente se a
   ordem for invertida (verificação manual único).
   **Teste:** `test_runner.py::test_previous_read_before_insert_via_spy`.
 
-- [ ] **5.3 Requisito §6.4 — guard diário entre execuções** [§6.4]
+- [x] **5.3 Requisito §6.4 — guard diário entre execuções** [§6.4]
   Implementado em `process_route`, usando `route_state.last_queried_date`.
   **Sucesso:** os três casos de §6.4 passam.
   **Teste:** `test_runner.py::test_daily_guard_blocks_second_real_call`,
