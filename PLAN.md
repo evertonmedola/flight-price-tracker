@@ -307,7 +307,7 @@ Convenção: "verde" = comando roda com exit code 0.
   com `bash -x` simulando cada exit code) — documentar no `README.md`
   como foi validado, já que GitHub Actions não é testável por `pytest`.
 
-- [ ] **8.3 Segredos no GitHub** (ação manual, não código)
+- [x] **8.3 Segredos no GitHub** (ação manual, não código)
   Cadastrar `SERPAPI_API_KEY`, `SMTP_USER`, `SMTP_APP_PASSWORD`,
   `ALERT_TO` em *Settings → Secrets and variables → Actions*.
   **Sucesso:** `workflow_dispatch` manual roda sem erro de env var
@@ -338,7 +338,7 @@ Convenção: "verde" = comando roda com exit code 0.
   `mypy --strict src`, `pytest --cov=flight_tracker
   --cov-fail-under=80`; todos verdes.
 
-- [ ] **9.3 Primeira execução real controlada**
+- [x] **9.3 Primeira execução real controlada**
   Rodar `workflow_dispatch` manual (não dry-run) uma vez, com as rotas
   reais de `config/routes.yaml`, e confirmar o commit do `.db`.
   **Sucesso:** `data/prices.db` aparece no repositório com uma linha

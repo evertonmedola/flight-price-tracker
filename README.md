@@ -14,6 +14,13 @@ O checklist de implementação está em [`PLAN.md`](PLAN.md).
 - Coleta via `PriceProvider`: `MockProvider` (dados fake, para testes e
   dry-run) ou `SerpApiProvider` (preços reais do Google Flights via
   [SerpApi](https://serpapi.com/google-flights-api)).
+- **A fonte de dados é a SerpApi (Google Flights), não uma API oficial de
+  companhia aérea nem de GDS.** A opção clássica para esse tipo de projeto
+  seria a Amadeus Self-Service API, mas ela foi
+  [desativada em 17/07/2026](https://www.phocuswire.com/amadeus-shut-down-self-service-apis-portal-developers)
+  — a SerpApi foi escolhida por dar preço real de graça no volume de uso
+  diário deste projeto (plano gratuito de 250 buscas/mês), sem precisar de
+  aprovação de parceria como a maioria das APIs oficiais de voo exige.
 - Alerta quando o preço cai em relação à última cotação **ou** fica abaixo
   do `target_price_cents` da rota — sem repetir e-mail para o mesmo valor
   já notificado.
