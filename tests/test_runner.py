@@ -337,3 +337,29 @@ class TestRunDryRun:
         assert code == 0
         captured = capsys.readouterr()
         assert "nenhuma queda" in captured.out.lower()
+
+
+class TestDbPathParentDirCreated:
+    """Regressão: sqlite3.connect não cria diretórios ausentes.
+
+    Reproduz o que aconteceu na primeira execução real no GitHub Actions:
+    checkout novo, data/ nunca commitada (nunca havia data/prices.db no
+    repo), db_path aponta para um diretório que ainda não existe ->
+    sqlite3.OperationalError: unable to open database file.
+    """
+
+    def test_creates_missing_parent_directory(self, tmp_path: Path) -> None:
+        config_path = _write_routes_yaml(tmp_path, _ONE_ROUTE_YAML)
+        nested_db_path = tmp_path / "data" / "nested" / "prices.db"
+        assert not nested_db_path.parent.exists()
+
+        code = run(
+            config_path=config_path,
+            db_path=str(nested_db_path),
+            dry_run=False,
+            provider=MockProvider(),
+            today=_TODAY,
+        )
+
+        assert code == 0
+        assert nested_db_path.exists()

@@ -93,6 +93,13 @@ def run(
 
     resolved_today = today if today is not None else datetime.now(UTC).date()
 
+    if db_path != ":memory:":
+        # sqlite3.connect não cria diretórios ausentes: numa checkout nova
+        # (ex.: primeira execução no GitHub Actions), o diretório pai de
+        # data/prices.db ainda não existe e a conexão falha com
+        # "unable to open database file".
+        Path(db_path).parent.mkdir(parents=True, exist_ok=True)
+
     conn = sqlite3.connect(db_path)
     try:
         init_db(conn)
