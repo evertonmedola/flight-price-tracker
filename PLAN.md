@@ -286,14 +286,14 @@ Convenção: "verde" = comando roda com exit code 0.
 
 ## Fase 8 — CI/CD
 
-- [ ] **8.1 `.github/workflows/ci.yml`** [§9.1]
+- [x] **8.1 `.github/workflows/ci.yml`** [§9.1]
   `ruff check`, `ruff format --check`, `mypy --strict src`, `pytest
   --cov=flight_tracker --cov-fail-under=80`.
   **Sucesso:** workflow roda verde num PR de teste.
   **Teste:** validação manual — abrir um PR (ou usar `act`/execução
   local dos mesmos comandos) e confirmar os 4 passos verdes.
 
-- [ ] **8.2 `.github/workflows/track.yml`** [§9.2]
+- [x] **8.2 `.github/workflows/track.yml`** [§9.2]
   Cron `"0 11 * * *"` + `workflow_dispatch`; `permissions: contents:
   write`; passo do tracker com `set +e` e captura de exit code; commit
   condicional (`code == '0' || code == '2'`); gate final que falha o
