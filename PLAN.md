@@ -96,8 +96,9 @@ Convenção: "verde" = comando roda com exit code 0.
   retorna os valores gravados.
   **Teste:** `test_storage.py::test_route_state_upsert_roundtrip`.
 
-- [ ] **2.4 Requisito §6.1 — ordem leitura-antes-escrita (teste
-  dedicado)** [§6.1]
+- [x] **2.4 Requisito §6.1 — ordem leitura-antes-escrita (teste
+  dedicado)** [§6.1] — adiada e formalizada em 5.2, como esta tarefa
+  já previa (`test_runner.py::test_previous_read_before_insert_via_spy`).
   Implementar o spy de storage descrito em §6.1 (wrapper que registra a
   ordem de chamadas) e usá-lo num teste de integração leve do fluxo
   "processar uma rota" (pode already usar uma versão mínima da função
