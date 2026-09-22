@@ -247,7 +247,7 @@ Convenção: "verde" = comando roda com exit code 0.
 
 ## Fase 6 — Notificação por e-mail
 
-- [ ] **6.1 `notifier.py`: `build_message()`** [§8]
+- [x] **6.1 `notifier.py`: `build_message()`** [§8]
   Monta `EmailMessage` `multipart/alternative`, assunto
   singular/plural, tabela HTML com `html.escape`, formatação `R$
   X.XXX,XX`.
@@ -257,7 +257,7 @@ Convenção: "verde" = comando roda com exit code 0.
   `::test_subject_plural`, `::test_html_table_contains_all_fields`,
   `::test_html_escapes_untrusted_fields`, `::test_text_fallback_present`.
 
-- [ ] **6.2 `notifier.py`: `send()`** [§8]
+- [x] **6.2 `notifier.py`: `send()`** [§8]
   `SMTP_SSL`, autenticação, envio para `ALERT_TO` (default
   `SMTP_USER`).
   **Sucesso:** com um SMTP fake injetado, `send()` chama `login` e
