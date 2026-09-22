@@ -61,7 +61,7 @@ Convenção: "verde" = comando roda com exit code 0.
   de validação individualmente (um teste por regra violada + um teste
   do caminho feliz + um teste de `key` derivado quando ausente).
 
-- [ ] **1.3 Criar `config/routes.yaml` de exemplo real**
+- [x] **1.3 Criar `config/routes.yaml` de exemplo real**
   Com 2-3 rotas plausíveis (usadas depois em dry-run manual).
   **Sucesso:** `config.load_routes("config/routes.yaml")` não levanta
   exceção.

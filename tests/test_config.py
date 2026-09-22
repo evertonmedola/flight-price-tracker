@@ -137,3 +137,11 @@ class TestValidationErrors:
         path = _write_yaml(tmp_path, "something_else: []\n")
         with pytest.raises(ConfigError):
             load_routes(path)
+
+
+class TestExampleConfig:
+    def test_repo_example_loads_without_error(self) -> None:
+        path = Path(__file__).resolve().parent.parent / "config" / "routes.yaml"
+        routes = load_routes(path)
+        assert len(routes) >= 1
+        assert len({route.key for route in routes}) == len(routes)

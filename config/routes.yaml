@@ -1,0 +1,20 @@
+routes:
+  - key: GRU-LIS
+    origin: GRU
+    destination: LIS
+    departure_date: "2026-12-10"
+    return_date: "2026-12-20"
+    target_price_cents: 350000
+
+  - key: GRU-MIA
+    origin: GRU
+    destination: MIA
+    departure_date: "2027-01-15"
+    return_date: "2027-01-25"
+    target_price_cents: 280000
+
+  - key: GIG-SCL
+    origin: GIG
+    destination: SCL
+    departure_date: "2026-11-05"
+    target_price_cents: 150000
