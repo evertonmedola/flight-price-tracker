@@ -88,6 +88,9 @@ class SerpApiProvider:
 
     @staticmethod
     def _extract_lowest_price_cents(data: dict[str, Any]) -> int:
+        # A SerpApi retorna "price" em reais inteiros (ex.: 5888 = R$ 5.888,00),
+        # não em centavos. Multiplicar por 100 aqui é o que converte para o
+        # formato interno do sistema (PriceQuote.price_cents); não remover.
         prices: list[float] = []
         for section in ("best_flights", "other_flights"):
             for flight in data.get(section) or []:

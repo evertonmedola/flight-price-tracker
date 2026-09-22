@@ -63,6 +63,32 @@ class TestParsing:
 
         assert quote.price_cents == 300000
 
+    def test_real_response_example_gru_lis(self) -> None:
+        """Regressão: fixture de uma resposta real da SerpApi (GRU-LIS, ida
+        e volta), validada manualmente contra a API. "price" vem em reais
+        inteiros (5888 = R$ 5.888,00), não em centavos."""
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            return httpx.Response(
+                200,
+                json={
+                    "search_parameters": {
+                        "departure_id": "GRU",
+                        "arrival_id": "LIS",
+                        "outbound_date": "2026-12-10",
+                        "return_date": "2026-12-20",
+                        "currency": "BRL",
+                    },
+                    "best_flights": [{"price": 5888, "type": "Round trip"}],
+                    "other_flights": [{"price": 7062}],
+                },
+            )
+
+        provider = _provider(handler)
+        quote = provider.get_price(_route())
+
+        assert quote.price_cents == 588800
+
 
 class TestErrors:
     def test_4xx_raises_immediately(self) -> None:
