@@ -36,6 +36,13 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # No console do Windows (cp1252 por padrão), print() com caracteres como
+    # ✈️/→ no e-mail de dry-run levanta UnicodeEncodeError. UTF-8 explícito
+    # evita isso e é inofensivo em ambientes que já usam UTF-8 (Actions/Linux).
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
+
     args = build_parser().parse_args(argv)
 
     if args.db is not None:

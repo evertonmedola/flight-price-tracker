@@ -1,3 +1,5 @@
+import io
+import sys
 from pathlib import Path
 
 import pytest
@@ -93,3 +95,22 @@ class TestExitCodePropagation:
         code = main([])
 
         assert code == 2
+
+
+class TestOutputEncoding:
+    def test_dry_run_does_not_crash_on_non_utf8_console(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Regressão: console do Windows (cp1252) não decodifica ✈️/→ do e-mail.
+
+        main() precisa reconfigurar stdout para UTF-8 antes de imprimir,
+        senão print() levanta UnicodeEncodeError nesse ambiente.
+        """
+        fake_stdout = io.TextIOWrapper(
+            io.BytesIO(), encoding="cp1252", errors="strict", write_through=True
+        )
+        monkeypatch.setattr(sys, "stdout", fake_stdout)
+
+        code = main(["--dry-run"])
+
+        assert code == 0
