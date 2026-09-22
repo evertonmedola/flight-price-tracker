@@ -10,7 +10,7 @@ Convenção: "verde" = comando roda com exit code 0.
 
 ## Fase 0 — Scaffolding do projeto
 
-- [ ] **0.1 Criar `pyproject.toml`**
+- [x] **0.1 Criar `pyproject.toml`**
   Dependências: `pyyaml`, `httpx`. Dev: `pytest`, `pytest-cov`, `ruff`,
   `mypy`. Configurar `[tool.ruff]`, `[tool.mypy]` (`strict = true`),
   `[tool.pytest.ini_options]` (`testpaths = ["tests"]`), build backend
@@ -19,7 +19,7 @@ Convenção: "verde" = comando roda com exit code 0.
   **Sucesso:** `pip install -e ".[dev]"` termina sem erro.
   **Teste:** `python -c "import flight_tracker"` roda sem `ModuleNotFoundError`.
 
-- [ ] **0.2 Criar esqueleto de pastas** [§2]
+- [x] **0.2 Criar esqueleto de pastas** [§2]
   `src/flight_tracker/` com `__init__.py` vazio, `providers/__init__.py`
   vazio, `tests/__init__.py` (se necessário), `config/`, `data/`.
   **Sucesso:** a árvore bate com §2 do SPEC.
@@ -27,13 +27,13 @@ Convenção: "verde" = comando roda com exit code 0.
   implemented" (não com `ImportError`/`ModuleNotFoundError`) — confirma
   que a estrutura de import está correta antes de implementar nada.
 
-- [ ] **0.3 Criar `.gitattributes`** [§9.3]
+- [x] **0.3 Criar `.gitattributes`** [§9.3]
   Conteúdo: `data/prices.db binary`.
   **Sucesso:** arquivo existe com a linha exata.
   **Teste:** `git check-attr binary data/prices.db` (após `git init` e
   `git add`) retorna `binary: set`.
 
-- [ ] **0.4 `git init` + primeiro commit**
+- [x] **0.4 `git init` + primeiro commit**
   Inclui `.gitignore` (ignora `__pycache__`, `.venv`, `.pytest_cache`,
   `.mypy_cache`, `.coverage`, **não** ignora `data/prices.db`, que é
   versionado por decisão do SPEC).
