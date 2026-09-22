@@ -51,7 +51,7 @@ Convenção: "verde" = comando roda com exit code 0.
   válidos e confirma imutabilidade (`FrozenInstanceError` ao tentar
   alterar um campo).
 
-- [ ] **1.2 `config.py`: parsing e validação de `routes.yaml`** [§3.2]
+- [x] **1.2 `config.py`: parsing e validação de `routes.yaml`** [§3.2]
   Função `load_routes(path: Path) -> list[Route]`. Implementa todas as
   regras de validação da §3.2 (IATA 3 letras, datas ISO, `return_date >=
   departure_date`, `target_price_cents > 0`, `key` único/derivado,
