@@ -72,13 +72,13 @@ Convenção: "verde" = comando roda com exit code 0.
 
 ## Fase 2 — Armazenamento
 
-- [ ] **2.1 `storage.py`: criação de schema** [§3.3]
+- [x] **2.1 `storage.py`: criação de schema** [§3.3]
   Função `init_db(conn: sqlite3.Connection) -> None` cria as duas
   tabelas e o índice com `IF NOT EXISTS`.
   **Sucesso:** rodar duas vezes seguidas não levanta erro (idempotente).
   **Teste:** `tests/test_storage.py::test_init_db_idempotent`.
 
-- [ ] **2.2 `storage.py`: `insert_price_quote` e `read_latest_price`**
+- [x] **2.2 `storage.py`: `insert_price_quote` e `read_latest_price`**
   [§3.3, §4 passo 1]
   `read_latest_price(conn, route_key) -> PriceQuote | None` (mais
   recente por `fetched_at DESC`); `insert_price_quote(conn, quote)`.
@@ -87,7 +87,7 @@ Convenção: "verde" = comando roda com exit code 0.
   **Teste:** `test_storage.py::test_read_latest_price_returns_most_recent`
   e `::test_read_latest_price_returns_none_when_empty`.
 
-- [ ] **2.3 `storage.py`: `route_state` — leitura/escrita de
+- [x] **2.3 `storage.py`: `route_state` — leitura/escrita de
   `last_notified_price_cents` e `last_queried_date`** [§3.3, §4]
   `read_route_state(conn, route_key) -> RouteState | None`,
   `upsert_last_notified(conn, route_key, price_cents)`,
@@ -112,7 +112,7 @@ Convenção: "verde" = comando roda com exit code 0.
   ou `test_runner.py` equivalente (decidir na implementação; documentar
   onde ficou).
 
-- [ ] **2.5 Requisito §6.3 — atomicidade via transação** [§6.3]
+- [x] **2.5 Requisito §6.3 — atomicidade via transação** [§6.3]
   `storage.py` expõe um context manager `transaction(conn)` que faz
   `BEGIN`/`COMMIT`/`ROLLBACK`.
   **Sucesso:** uma exceção dentro do bloco desfaz todas as escritas.
