@@ -53,8 +53,15 @@ class SerpApiProvider:
             "hl": "pt",
             "api_key": self._api_key,
         }
+        # A SerpApi assume type=1 (ida e volta) quando o parâmetro está
+        # ausente, e round trip exige return_date. Sem declarar type=2 para
+        # rotas só de ida, a busca vira um round trip sem return_date e a
+        # SerpApi rejeita com erro 4xx.
         if route.return_date is not None:
+            params["type"] = "1"
             params["return_date"] = route.return_date.isoformat()
+        else:
+            params["type"] = "2"
         return params
 
     def _request_with_retry(self, params: dict[str, str]) -> dict[str, Any]:

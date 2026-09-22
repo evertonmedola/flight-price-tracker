@@ -136,8 +136,12 @@ def _process_all_routes(
         for route in routes:
             try:
                 alert = process_route(conn, provider, route, today)
-            except ProviderError:
-                _logger.warning("provider falhou para a rota %s", route.key)
+            except ProviderError as exc:
+                # A mensagem da exceção precisa ir pro log: sem ela, o
+                # GitHub Actions só mostra "provider falhou para a rota X",
+                # sem indicar a causa (4xx, sem voos, timeout etc.) — o que
+                # obriga a reproduzir o erro localmente pra diagnosticar.
+                _logger.warning("provider falhou para a rota %s: %s", route.key, exc)
                 had_provider_error = True
                 continue
             if alert is not None:

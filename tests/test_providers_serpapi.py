@@ -23,6 +23,17 @@ def _route() -> Route:
     )
 
 
+def _one_way_route() -> Route:
+    return Route(
+        key="GIG-SCL",
+        origin="GIG",
+        destination="SCL",
+        departure_date=date(2026, 11, 5),
+        return_date=None,
+        target_price_cents=None,
+    )
+
+
 def _client_with(handler: Callable[[httpx.Request], httpx.Response]) -> httpx.Client:
     return httpx.Client(transport=httpx.MockTransport(handler))
 
@@ -88,6 +99,42 @@ class TestParsing:
         quote = provider.get_price(_route())
 
         assert quote.price_cents == 588800
+
+
+class TestRequestParams:
+    """Regressão: rota GIG-SCL (sem return_date) falhava em produção.
+
+    A SerpApi define `type` como 1 (ida e volta) por padrão quando o
+    parâmetro está ausente, e round trip exige `return_date`. Sem enviar
+    `type` explicitamente, uma rota só de ida (sem return_date) resultava
+    numa busca round-trip sem return_date na SerpApi -> erro 4xx.
+    """
+
+    def test_round_trip_route_sends_type_1_and_return_date(self) -> None:
+        captured: dict[str, str] = {}
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            captured.update(dict(request.url.params))
+            return _success_response()
+
+        provider = _provider(handler)
+        provider.get_price(_route())
+
+        assert captured["type"] == "1"
+        assert captured["return_date"] == "2026-12-20"
+
+    def test_one_way_route_sends_type_2_and_no_return_date(self) -> None:
+        captured: dict[str, str] = {}
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            captured.update(dict(request.url.params))
+            return _success_response()
+
+        provider = _provider(handler)
+        provider.get_price(_one_way_route())
+
+        assert captured["type"] == "2"
+        assert "return_date" not in captured
 
 
 class TestErrors:

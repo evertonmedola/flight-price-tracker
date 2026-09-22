@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 from collections.abc import Iterator
 from datetime import date
@@ -219,7 +220,10 @@ class TestRunExitCodes:
         assert code == 0
 
     def test_exit_2_partial_provider_failure(
-        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+        self,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+        caplog: pytest.LogCaptureFixture,
     ) -> None:
         import flight_tracker.runner as runner_module
 
@@ -229,15 +233,20 @@ class TestRunExitCodes:
         provider = _FlakyProvider(sequences={"GRU-MIA": [200000]}, failing_route_key="GRU-LIS")
 
         db_path = str(tmp_path / "prices.db")
-        code = run(
-            config_path=config_path,
-            db_path=db_path,
-            dry_run=False,
-            provider=provider,
-            today=_TODAY,
-        )
+        with caplog.at_level(logging.WARNING):
+            code = run(
+                config_path=config_path,
+                db_path=db_path,
+                dry_run=False,
+                provider=provider,
+                today=_TODAY,
+            )
 
         assert code == 2
+        # Regressão: o log precisa trazer o motivo real da falha do
+        # provider, não só o nome da rota — sem isso, diagnosticar exige
+        # reproduzir o erro localmente (aconteceu com a rota GIG-SCL).
+        assert "falha simulada para GRU-LIS" in caplog.text
         conn = sqlite3.connect(db_path)
         try:
             rows = conn.execute(
