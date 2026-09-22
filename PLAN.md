@@ -318,7 +318,7 @@ Convenção: "verde" = comando roda com exit code 0.
 
 ## Fase 9 — Documentação e fechamento
 
-- [ ] **9.1 `README.md`**
+- [x] **9.1 `README.md`**
   Conteúdo mínimo: o que o projeto faz, como rodar localmente
   (`--dry-run` primeiro), como configurar `routes.yaml`, como cadastrar
   os 4 segredos, como o cron funciona, e a observação combinada sobre o
@@ -331,7 +331,7 @@ Convenção: "verde" = comando roda com exit code 0.
   **Teste:** validação manual — seguir o README do zero (ambiente
   limpo) e confirmar que os comandos batem.
 
-- [ ] **9.2 Cobertura final e checagens de qualidade**
+- [x] **9.2 Cobertura final e checagens de qualidade**
   **Sucesso:** todos os critérios de §10 do SPEC (itens 1–10) passam.
   **Teste:** rodar em sequência: `ruff check`, `ruff format --check`,
   `mypy --strict src`, `pytest --cov=flight_tracker
