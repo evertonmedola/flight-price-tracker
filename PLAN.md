@@ -123,7 +123,7 @@ Convenção: "verde" = comando roda com exit code 0.
 
 ## Fase 3 — Regra de alerta
 
-- [ ] **3.1 `alerts.py`: `evaluate()`** [§4 passo 5, seção "Regra de
+- [x] **3.1 `alerts.py`: `evaluate()`** [§4 passo 5, seção "Regra de
   alerta" da Parte 2 aprovada]
   Função pura: `evaluate(quote, previous, target_price_cents,
   last_notified_price_cents) -> Alert | None`.
